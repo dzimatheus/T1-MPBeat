@@ -1,0 +1,57 @@
+Main
+Enquanto n ≠ 0 faça
+  para cada empresa e de 'a' até 'z' faça
+    para i ← 1 até n faça
+      para j ← 1 até n faça
+        adj[e][i][j] ← 0
+        T[e][i][j] ← 0
+
+    Enquanto verdadeiro faça
+      declarar A, B como inteiro
+      declarar empresa como caractere
+      ler A, B  
+      se (A = 0 e B = 0) então
+          interromper o laço
+      fim-se
+      ler empresa
+      c ← código(empresa) − código('a')
+      A ← --
+      B ← --
+      adj[c][A][B] ← 1
+    fim-enquanto
+    Para c de 0 até < MAXE faça
+      // Inicialização de T^(0)
+      para i de 0 até < n faça
+          para j de 0 até < n faça
+              se (i = j) ou (adj[c][i][j] = 1) então
+                  T[c][i][j] ← 1
+              senão
+                 T[c][i][j] ← 0
+              fim-se
+          fim-para
+      fim-para
+      Para k de 0 até < n faça
+        Para i de 0 até < n faça
+          se (T[e][i][k] == 1)
+            Para j de 0 até < n faça 
+              se (T[e][k][j] == 1)
+                T[e][i][j] = 1
+            fim-para
+        fim-para
+      fim-para
+    fim-para
+  Enquanto verdadeiro faça
+    ler A, B
+    se A==0 e B==0 então
+      interromper o laço
+    A--
+    B--
+    Para e de 0 até < MAXE faça 
+      se (T[e][A][B]) então
+        printf (empresa)
+        encontrado = 1
+      fim-se
+    fim-para
+    se (não encontrado) então
+      printf(-)
+  Fim
