@@ -1,0 +1,93 @@
+//Grupo MPBeat - 
+//Matheus D. Boikivski
+//Breno Fortes
+//Pamela R. Cordeiro
+
+#include <stdio.h>
+
+#define MAXV 200
+#define MAXE 26  // letras minúsculas 'a'..'z'
+
+int T[MAXE][MAXV][MAXV];   // fecho transitivo por empresa
+int adj[MAXE][MAXV][MAXV]; // adjacência por empresa
+
+int main() {
+    int n;
+
+    while (scanf("%d", &n) && n != 0) {
+
+        // INICIALIZAÇÃO
+        for (int c = 0; c < MAXE; c++)
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++) {
+                    adj[c][i][j] = 0;
+                    T[c][i][j]   = 0;
+                }
+
+        // LEITURA DAS CONEXÕES
+        while (1) {
+            int A, B;
+            char empresa;
+            scanf("%d %d", &A, &B);
+
+            if (A == 0 && B == 0)
+                break;
+
+            scanf(" %c", &empresa);
+
+            int c = empresa - 'a';
+            A--; B--; // converte para índice 0..n-1
+
+            adj[c][A][B] = 1;
+        }
+
+        // FECHO TRANSITIVO
+        for (int c = 0; c < MAXE; c++) {
+
+            // Inicialização de T^(0)
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (i == j || adj[c][i][j])
+                        T[c][i][j] = 1;
+                    else
+                        T[c][i][j] = 0;
+                }
+            }
+
+            // Warshall
+            for (int k = 0; k < n; k++)
+                for (int i = 0; i < n; i++)
+                    if (T[c][i][k] == 1)
+                        for (int j = 0; j < n; j++)
+                            if (T[c][k][j] == 1)
+                                T[c][i][j] = 1;
+        }
+        while (1) {
+            int A, B;
+            scanf("%d %d", &A, &B);
+
+            if (A == 0 && B == 0)
+                break;
+
+            A--; B--;
+
+            int encontrado = 0;
+
+            for (int c = 0; c < MAXE; c++) {
+                if (T[c][A][B]) {
+                    printf("%c", c + 'a');
+                    encontrado = 1;
+                }
+            }
+
+            if (!encontrado)
+                printf("-");
+
+            printf("\n");
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}
